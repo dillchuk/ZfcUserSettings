@@ -1,4 +1,5 @@
 <?php
+
 /*
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -16,24 +17,22 @@
  * and is licensed under the MIT license.
  */
 
-namespace Eye4web\ZfcUser\Settings\Factory\Service;
+namespace Eye4web\ZfcUser\Settings\Factory\Controller\Plugin;
 
+use Eye4web\ZfcUser\Settings\Controller\Plugin\UserSettingPlugin;
 use Eye4web\ZfcUser\Settings\Service\UserSettingsService;
-use Zend\ServiceManager\FactoryInterface;
-use Zend\ServiceManager\ServiceLocatorInterface;
+use Zend\ServiceManager\Factory\FactoryInterface;
+use Interop\Container\ContainerInterface;
 
-class UserSettingsServiceFactory implements FactoryInterface
-{
-    /**
-     * Create service
-     *
-     * @param ServiceLocatorInterface $serviceLocator
-     * @return mixed
-     */
-    public function createService(ServiceLocatorInterface $serviceLocator)
-    {
-        $mapper = $serviceLocator->get('Eye4web\ZfcUser\Settings\Mapper\DoctrineORM\UserSettingMapper');
+class UserSettingPluginFactory implements FactoryInterface {
 
-        return new UserSettingsService($mapper);
+    public function __invoke(
+    ContainerInterface $container, $requestedName, array $options = null
+    ) {
+        return new UserSettingPlugin(
+        $container->get(UserSettingsService::class),
+        $container->get('zfcuser_auth_service')
+        );
     }
+
 }

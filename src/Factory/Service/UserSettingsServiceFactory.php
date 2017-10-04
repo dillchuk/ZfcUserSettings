@@ -1,4 +1,5 @@
 <?php
+
 /*
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -16,28 +17,21 @@
  * and is licensed under the MIT license.
  */
 
-namespace Eye4web\ZfcUser\Settings\Factory\View\Helper;
+namespace Eye4web\ZfcUser\Settings\Factory\Service;
 
-use Eye4web\ZfcUser\Settings\View\Helper\UserSettingHelper;
-use Zend\ServiceManager\FactoryInterface;
-use Zend\ServiceManager\ServiceLocatorInterface;
+use Eye4web\ZfcUser\Settings\Service\UserSettingsService;
+use Eye4web\ZfcUser\Settings\Mapper\DoctrineORM\UserSettingMapper;
+use Zend\ServiceManager\Factory\FactoryInterface;
+use \Interop\Container\ContainerInterface;
 
-class UserSettingHelperFactory implements FactoryInterface
-{
-    /**
-     * Create service
-     *
-     * @param ServiceLocatorInterface $helperLocator
-     * @return UserSettingHelper|mixed
-     */
-    public function createService(ServiceLocatorInterface $helperLocator)
-    {
-        /** @var ServiceLocatorInterface $serviceLocator */
-        $serviceLocator = $helperLocator->getServiceLocator();
+class UserSettingsServiceFactory implements FactoryInterface {
 
-        $userSettingsService = $serviceLocator->get('Eye4web\ZfcUser\Settings\Service\UserSettingsService');
-        $zfcUserIdentity     = $helperLocator->get('ZfcUserIdentity');
-
-        return new UserSettingHelper($userSettingsService, $zfcUserIdentity);
+    public function __invoke(
+    ContainerInterface $container, $requestedName, array $options = null
+    ) {
+        return new UserSettingsService(
+        $container->get(UserSettingMapper::class)
+        );
     }
+
 }
