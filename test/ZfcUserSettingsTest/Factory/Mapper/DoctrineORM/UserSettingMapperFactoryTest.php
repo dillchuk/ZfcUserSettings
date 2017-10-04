@@ -7,16 +7,15 @@ use Eye4web\ZfcUser\Settings\Factory\Mapper\DoctrineORM\UserSettingMapperFactory
 use PHPUnit_Framework_TestCase;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
-class UserSettingMapperFactoryTest extends PHPUnit_Framework_TestCase
-{
+class UserSettingMapperFactoryTest extends PHPUnit_Framework_TestCase {
+
     /** @var UserSettingMapperFactory */
     protected $factory;
 
     /** @var ServiceLocatorInterface */
     protected $serviceLocator;
 
-    public function setUp()
-    {
+    public function setUp() {
         /** @var ServiceLocatorInterface $serviceLocator */
         $serviceLocator = $this->getMock('Zend\ServiceManager\ServiceLocatorInterface');
         $this->serviceLocator = $serviceLocator;
@@ -25,19 +24,20 @@ class UserSettingMapperFactoryTest extends PHPUnit_Framework_TestCase
         $this->factory = $factory;
     }
 
-    public function testCreateService()
-    {
+    public function testCreateService() {
         $objectManager = $this->getMockBuilder('Doctrine\ORM\EntityManagerInterface')
-                              ->disableOriginalConstructor()
-                              ->getMock();
+        ->disableOriginalConstructor()
+        ->getMock();
 
         $this->serviceLocator->expects($this->at(0))
-                             ->method('get')
-                             ->with('zfcuser_doctrine_em')
-                             ->willReturn($objectManager);
+        ->method('get')
+        ->with('zfcuser_doctrine_em')
+        ->willReturn($objectManager);
 
-        $result = $this->factory->createService($this->serviceLocator);
+        $result = $this->factory->__invoke($this->serviceLocator);
 
-        $this->assertInstanceOf('Eye4web\ZfcUser\Settings\Mapper\DoctrineORM\UserSettingMapper', $result);
+        $this->assertInstanceOf('Eye4web\ZfcUser\Settings\Mapper\DoctrineORM\UserSettingMapper',
+        $result);
     }
+
 }

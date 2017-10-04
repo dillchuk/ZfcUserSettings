@@ -6,16 +6,15 @@ use Eye4web\ZfcUser\Settings\Factory\Service\UserSettingsServiceFactory;
 use PHPUnit_Framework_TestCase;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
-class UserSettingsServiceFactoryTest extends PHPUnit_Framework_TestCase
-{
+class UserSettingsServiceFactoryTest extends PHPUnit_Framework_TestCase {
+
     /** @var UserSettingsServiceFactory */
     protected $factory;
 
     /** @var ServiceLocatorInterface */
     protected $serviceLocator;
 
-    public function setUp()
-    {
+    public function setUp() {
         /** @var ServiceLocatorInterface $serviceLocator */
         $serviceLocator = $this->getMock('Zend\ServiceManager\ServiceLocatorInterface');
         $this->serviceLocator = $serviceLocator;
@@ -25,21 +24,22 @@ class UserSettingsServiceFactoryTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Eye4web\ZfcUser\Settings\Factory\Service\UserSettingsServiceFactory::createService
+     * @covers Eye4web\ZfcUser\Settings\Factory\Service\UserSettingsServiceFactory::__invoke
      */
-    public function testCreateService()
-    {
+    public function testCreateService() {
         $userSettingMapper = $this->getMockBuilder('Eye4web\ZfcUser\Settings\Mapper\DoctrineORM\UserSettingMapper')
-                                  ->disableOriginalConstructor()
-                                  ->getMock();
+        ->disableOriginalConstructor()
+        ->getMock();
 
         $this->serviceLocator->expects($this->at(0))
-                             ->method('get')
-                             ->with('Eye4web\ZfcUser\Settings\Mapper\DoctrineORM\UserSettingMapper')
-                             ->willReturn($userSettingMapper);
+        ->method('get')
+        ->with('Eye4web\ZfcUser\Settings\Mapper\DoctrineORM\UserSettingMapper')
+        ->willReturn($userSettingMapper);
 
-        $result = $this->factory->createService($this->serviceLocator);
+        $result = $this->factory->__invoke($this->serviceLocator);
 
-        $this->assertInstanceOf('Eye4web\ZfcUser\Settings\Service\UserSettingsService', $result);
+        $this->assertInstanceOf('Eye4web\ZfcUser\Settings\Service\UserSettingsService',
+        $result);
     }
+
 }
